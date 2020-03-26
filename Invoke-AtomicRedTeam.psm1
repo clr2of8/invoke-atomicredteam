@@ -1,10 +1,10 @@
 #requires -Version 3.0
 
 Write-Host -ForegroundColor cyan "Calling Invoke-AtomicRedTeam.psm1"
-Start-Sleep -seconds 7
+
 #Get public and private function definition files.
 $Public = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -Recurse -ErrorAction SilentlyContinue )
-$Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -Recurse  -ErrorAction SilentlyContinue )
+$Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -Recurse -Exclude 'AtomicClassSchema.ps1'  -ErrorAction SilentlyContinue )
 
 #. "C:\AtomicRedTeam\invoke-atomicredteam\Private\AtomicClassSchema.ps1"
 
