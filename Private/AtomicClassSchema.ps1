@@ -1,3 +1,5 @@
+Write-Host -fore Magenta "Running AtomicClassSchema.ps1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
 class AtomicDependency {
     [String] $description
     [String] $prereq_command
