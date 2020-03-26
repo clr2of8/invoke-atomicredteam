@@ -6,7 +6,7 @@ Write-Host -ForegroundColor cyan "Calling Invoke-AtomicRedTeam.psm1"
 $Public = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -Recurse -ErrorAction SilentlyContinue )
 $Private = @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -Recurse -Exclude 'AtomicClassSchema.ps1'  -ErrorAction SilentlyContinue )
 
-#. "C:\AtomicRedTeam\invoke-atomicredteam\Private\AtomicClassSchema.ps1"
+. "C:\AtomicRedTeam\invoke-atomicredteam\Private\AtomicClassSchema.ps1"
 
 #Dot source the files
 Foreach ($import in @($Public + $Private)) {
