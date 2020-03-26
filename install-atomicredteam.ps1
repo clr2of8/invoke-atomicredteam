@@ -57,36 +57,36 @@ function Install-AtomicRedTeam {
         $InstallPathwIart = Join-Path $InstallPath "invoke-atomicredteam"
         $modulePath = Join-Path "$InstallPath" "invoke-atomicredteam\Invoke-AtomicRedTeam.psd1"
         if ($Force -or -Not (Test-Path -Path $InstallPathwIart )) {
-            # write-verbose "Directory Creation"
-            # if ($Force) {
-            #     Try { 
-            #         if (Test-Path $InstallPathwIart) { Remove-Item -Path $InstallPathwIart -Recurse -Force -ErrorAction Stop | Out-Null }
-            #     }
-            #     Catch {
-            #         Write-Host -ForegroundColor Red $_.Exception.Message
-            #         return
-            #     }
-            # }
-            # if (-not (Test-Path $InstallPath)) { New-Item -ItemType directory -Path $InstallPath | Out-Null }
+            write-verbose "Directory Creation"
+            if ($Force) {
+                Try { 
+                    if (Test-Path $InstallPathwIart) { Remove-Item -Path $InstallPathwIart -Recurse -Force -ErrorAction Stop | Out-Null }
+                }
+                Catch {
+                    Write-Host -ForegroundColor Red $_.Exception.Message
+                    return
+                }
+            }
+            if (-not (Test-Path $InstallPath)) { New-Item -ItemType directory -Path $InstallPath | Out-Null }
 
-            # $url = "https://github.com/$RepoOwner/invoke-atomicredteam/archive/$Branch.zip"
-            # $path = Join-Path $DownloadPath "$Branch.zip"
-            # [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-            # write-verbose "Beginning download from Github"
-            # Invoke-WebRequest $url -OutFile $path
+            $url = "https://github.com/$RepoOwner/invoke-atomicredteam/archive/$Branch.zip"
+            $path = Join-Path $DownloadPath "$Branch.zip"
+            [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+            write-verbose "Beginning download from Github"
+            Invoke-WebRequest $url -OutFile $path
 
-            # write-verbose "Extracting ART to $InstallPath"
-            # $zipDest = Join-Path "$DownloadPath" "tmp"
-            # expand-archive -LiteralPath $path -DestinationPath "$zipDest" -Force:$Force
-            # $iartFolderUnzipped = Join-Path $zipDest "invoke-atomicredteam-$Branch"
-            # Move-Item $iartFolderUnzipped $InstallPathwIart
-            # Remove-Item $zipDest -Recurse -Force
-            # Remove-Item $path
+            write-verbose "Extracting ART to $InstallPath"
+            $zipDest = Join-Path "$DownloadPath" "tmp"
+            expand-archive -LiteralPath $path -DestinationPath "$zipDest" -Force:$Force
+            $iartFolderUnzipped = Join-Path $zipDest "invoke-atomicredteam-$Branch"
+            Move-Item $iartFolderUnzipped $InstallPathwIart
+            Remove-Item $zipDest -Recurse -Force
+            Remove-Item $path
 
-            # if (-not (Get-InstalledModule -Name "powershell-yaml" -ErrorAction:SilentlyContinue)) { 
-            #     write-verbose "Installing powershell-yaml"
-            #     Install-Module -Name powershell-yaml -Scope CurrentUser -Force
-            # }
+            if (-not (Get-InstalledModule -Name "powershell-yaml" -ErrorAction:SilentlyContinue)) { 
+                write-verbose "Installing powershell-yaml"
+                Install-Module -Name powershell-yaml -Scope CurrentUser -Force
+            }
 
             write-verbose "Importing invoke-atomicRedTeam module"
             Import-Module $modulePath -Force
