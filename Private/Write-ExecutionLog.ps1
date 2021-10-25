@@ -1,4 +1,4 @@
-function Write-ExecutionLog($startTime, $technique, $testNum, $testName, $logPath, $targetHostname, $targetUser, $guid) {
+function Write-ExecutionLog($startTime, $technique, $testNum, $testName, $logPath, $targetHostname, $targetUser, $guid, $stdout, $stderr) {
     if (!(Test-Path $logPath)) { 
         New-Item $logPath -Force -ItemType File | Out-Null
     } 
@@ -14,5 +14,7 @@ function Write-ExecutionLog($startTime, $technique, $testNum, $testName, $logPat
         "Hostname"               = $targetHostname; 
         "Username"               = $targetUser
         "GUID"                   = $guid
+        "std-out"                   = $stdout
+        "std-err"                   = $stderr
     } | Export-Csv -Path $LogPath -NoTypeInformation -Append
 }

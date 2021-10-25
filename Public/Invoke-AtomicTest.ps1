@@ -241,7 +241,8 @@ function Invoke-AtomicTest {
 
                     Write-Debug -Message 'Gathering final Atomic test command'
 
-
+                    $stdoutFilename = $tmpDir + "art-out.txt"
+                    $stderrFilename = $tmpDir + "art-err.txt"
                     if ($CheckPrereqs) {
                         Write-KeyValue "CheckPrereq's for: " $testId
                         $failureReasons = Invoke-CheckPrereqs $test $isElevated $InputArgs $PathToPayloads $TimeoutSeconds $session
@@ -288,7 +289,7 @@ function Invoke-AtomicTest {
                         $startTime = get-date
                         $final_command = Merge-InputArgs $test.executor.command $test $InputArgs $PathToPayloads
                         $res = Invoke-ExecuteCommand $final_command $test.executor.name $TimeoutSeconds $session -Interactive:$Interactive
-                        Write-ExecutionLog $startTime $AT $testCount $test.name $ExecutionLogPath $executionHostname $executionUser $test.auto_generated_guid
+                        Write-ExecutionLog $startTime $AT $testCount $test.name $ExecutionLogPath $executionHostname $executionUser $test.auto_generated_guid (Get-Content $stdoutFilename -Raw)  (Get-Content $stderrFilename -Raw)
                         Write-KeyValue "Done executing test: " $testId
                     }
                     if ($session) {
@@ -297,14 +298,12 @@ function Invoke-AtomicTest {
                     elseif (-not $interactive) {
                         # It is possible to have a null $session BUT also have stdout and stderr captured from 
                         #   the executed command. IF so then write the output to the pipe and cleanup the files.
-                        $stdoutFilename = $tmpDir + "art-out.txt"
                         if (Test-Path $stdoutFilename -PathType leaf) { 
                             Write-Output ((Get-Content $stdoutFilename) -replace '\x00', '')
                             if (-not $KeepStdOutStdErrFiles) {
                                 Remove-Item $stdoutFilename
                             }
                         }
-                        $stderrFilename = $tmpDir + "art-err.txt"
                         if (Test-Path $stderrFilename -PathType leaf) { 
                             Write-Output ((Get-Content $stderrFilename) -replace '\x00', '')
                             if (-not $KeepStdOutStdErrFiles) { 
