@@ -115,6 +115,7 @@ function Install-AtomicsFolder {
                     [System.IO.Compression.ZipFileExtensions]::ExtractToFile($_, (Join-Path $dstDir $_.Name), $true)
                 }
                 $zip.Dispose()
+                New-Item -ItemType Directory "ExternalPayloads" -Force -ErrorAction Ignore
             }
             else {
                 Invoke-WebRequest $url -OutFile $path
