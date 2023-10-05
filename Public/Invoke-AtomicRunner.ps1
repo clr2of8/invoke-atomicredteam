@@ -75,6 +75,7 @@ function Invoke-AtomicRunner {
             if ($Cleanup) { if (Get-Command 'Invoke-AtomicRunnerPostAtomicCleanupHook' -errorAction SilentlyContinue) { Invoke-AtomicRunnerPostAtomicCleanupHook } } 
             elseif (-not($ShowDetails -or $CheckPrereqs -or $ShowDetailsBrief -or $GetPrereqs)) { if (Get-Command 'Invoke-AtomicRunnerPostAtomicHook' -errorAction SilentlyContinue) { Invoke-AtomicRunnerPostAtomicHook } }
             if ($PauseBetweenAtomics) {
+                Write-Host "Sleeping $PauseBetweenAtomics seconds..."
                 Start-Sleep $PauseBetweenAtomics
             }
             elseif ($PauseBetweenAtomics -eq 0) {
